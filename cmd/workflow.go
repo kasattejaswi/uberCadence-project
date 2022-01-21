@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 TEJASWI KASAT <kasattejasvi@gmail.com>
 
 */
 package cmd
@@ -13,28 +13,27 @@ import (
 // workflowCmd represents the workflow command
 var workflowCmd = &cobra.Command{
 	Use:   "workflow",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Helps in running workflows",
+}
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+var listCmd = &cobra.Command{
+	Use:   "list",
+	Short: "List all the available workflows",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("workflow called")
+		fmt.Println("Listing available workflows")
+	},
+}
+
+var runCmd = &cobra.Command{
+	Use:   "run",
+	Short: "Run a workflow using name or run all available workflows",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("Running workflows")
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(workflowCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// workflowCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// workflowCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	workflowCmd.AddCommand(listCmd)
+	workflowCmd.AddCommand(runCmd)
 }

@@ -1,10 +1,15 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 TEJASWI KASAT <kasattejasvi@gmail.com>
 
 */
 package cmd
 
 import (
+	"fmt"
+	"os"
+	"path/filepath"
+
+	"github.com/kasattejaswi/uberCadence-project/localworker"
 	"github.com/spf13/cobra"
 )
 
@@ -13,29 +18,29 @@ var workerCmd = &cobra.Command{
 	Use:   "worker",
 	Short: "Start a worker registering all available workflows",
 	Long: `This will start a worker registering all available workflows.
-
 The workflows which will be registered can be modified from the code.
-
 For getting details about workflows, read the docs in specific workflow folders.
-
 Currently below workflows will be registered:
 ------------------------------------------------
 helloworld`,
-	// Run: func(cmd *cobra.Command, args []string) {
-	// 	fmt.Println("worker called")
-	// },
+}
+
+var startCmd = &cobra.Command{
+	Use:   "start",
+	Short: "Perform start action",
+	Run: func(cmd *cobra.Command, args []string) {
+		path, _ := cmd.Flags().GetString("path")
+		localworker.StartWorker(path)
+	},
 }
 
 func init() {
+	usersHome, err := os.UserHomeDir()
+	if err != nil {
+		panic(fmt.Sprintln("Error occurred while getting user's home directory:", err))
+	}
+	usersHome = filepath.Join(usersHome)
 	rootCmd.AddCommand(workerCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// workerCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// workerCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	workerCmd.AddCommand(startCmd)
+	startCmd.Flags().StringP("path", "p", usersHome, "Folder location where config file is present")
 }
