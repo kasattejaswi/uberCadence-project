@@ -19,10 +19,7 @@ var workerCmd = &cobra.Command{
 	Short: "Start a worker registering all available workflows",
 	Long: `This will start a worker registering all available workflows.
 The workflows which will be registered can be modified from the code.
-For getting details about workflows, read the docs in specific workflow folders.
-Currently below workflows will be registered:
-------------------------------------------------
-helloworld`,
+For getting details about workflows, read the docs in specific workflow folders.`,
 }
 
 var startCmd = &cobra.Command{

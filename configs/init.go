@@ -8,9 +8,9 @@ import (
 	"path/filepath"
 	"strconv"
 	"time"
-)
 
-const configFileName = "cadenceConfig.yaml"
+	"github.com/kasattejaswi/uberCadence-project/statics"
+)
 
 func WriteConfigFile(path string, isForce bool) {
 	pathToWrite, err := os.UserHomeDir()
@@ -29,8 +29,8 @@ func WriteConfigFile(path string, isForce bool) {
 	}
 	if isForce {
 		fmt.Println("Taking backup of existing configuration if any")
-		backupFileName := configFileName + "." + strconv.Itoa(int(time.Now().Unix()))
-		buff, err := ioutil.ReadFile(filepath.Join(pathToWrite, configFileName))
+		backupFileName := statics.ConfigFileName + "." + strconv.Itoa(int(time.Now().Unix()))
+		buff, err := ioutil.ReadFile(filepath.Join(pathToWrite, statics.ConfigFileName))
 		if err != nil {
 			fmt.Println("No existing configuration found: ", err)
 		}
@@ -40,12 +40,12 @@ func WriteConfigFile(path string, isForce bool) {
 		}
 		fmt.Println("Backup created successfully")
 	} else {
-		isFilePresent := CheckFileExistence(filepath.Join(pathToWrite, configFileName))
+		isFilePresent := CheckFileExistence(filepath.Join(pathToWrite, statics.ConfigFileName))
 		if isFilePresent {
 			panic("Configuration file already present. Use --force to override")
 		}
 	}
-	pathToWrite = filepath.Join(pathToWrite, configFileName)
+	pathToWrite = filepath.Join(pathToWrite, statics.ConfigFileName)
 	fmt.Println("Generating the default configuration file:", pathToWrite)
 	buff, err := ioutil.ReadFile("configs/config.yaml")
 	if err != nil {

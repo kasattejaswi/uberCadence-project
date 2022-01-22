@@ -16,7 +16,7 @@ import (
 // ApplicationName is the task list for this sample
 const ApplicationName = "helloWorldGroup"
 
-const helloWorldWorkflowName = "helloWorldWorkflow"
+const HelloWorldWorkflowName = "helloWorldWorkflow"
 
 // helloWorkflow workflow decider
 func HelloWorldWorkflow(ctx workflow.Context, name string) error {
@@ -30,7 +30,7 @@ func HelloWorldWorkflow(ctx workflow.Context, name string) error {
 	logger := workflow.GetLogger(ctx)
 	logger.Info("helloworld workflow started")
 	var helloworldResult string
-	err := workflow.ExecuteActivity(ctx, helloWorldActivity, name).Get(ctx, &helloworldResult)
+	err := workflow.ExecuteActivity(ctx, HelloWorldActivity, name).Get(ctx, &helloworldResult)
 	if err != nil {
 		logger.Error("Activity failed.", zap.Error(err))
 		return err
@@ -57,7 +57,7 @@ func HelloWorldWorkflow(ctx workflow.Context, name string) error {
 	return nil
 }
 
-func helloWorldActivity(ctx context.Context, name string) (string, error) {
+func HelloWorldActivity(ctx context.Context, name string) (string, error) {
 	logger := activity.GetLogger(ctx)
 	logger.Info("helloworld activity started")
 	return "Hello " + name + "!", nil

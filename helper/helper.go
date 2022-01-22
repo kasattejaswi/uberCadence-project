@@ -22,10 +22,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-const (
-	defaultConfigFile = "config/development.yaml"
-)
-
 type (
 	// Helper class for workflow sample helper.
 	Helper struct {
@@ -84,18 +80,17 @@ func (h *Helper) SetConfigFile(configFile string) {
 }
 
 // SetupServiceConfig setup the config for the sample code run
-func (h *Helper) SetupServiceConfig() {
+func (h *Helper) SetupServiceConfig(configPath string) {
 	if h.Service != nil {
 		return
 	}
 
-	if h.configFile == "" {
-		h.configFile = defaultConfigFile
-	}
+	h.configFile = configPath
+
 	// Initialize developer config for running samples
 	configData, err := ioutil.ReadFile(h.configFile)
 	if err != nil {
-		panic(fmt.Sprintf("Failed to log config file: %v, Error: %v", defaultConfigFile, err))
+		panic(fmt.Sprintf("Failed to log config file: %v, Error: %v", configPath, err))
 	}
 
 	if err := yaml.Unmarshal(configData, &h.Config); err != nil {
