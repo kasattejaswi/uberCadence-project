@@ -7,6 +7,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/kasattejaswi/uberCadence-project/localworker"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +21,10 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List all the available workflows",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Listing available workflows")
+		fmt.Println("---------------------------------")
+		fmt.Println("Below are the available workflows")
+		fmt.Println("---------------------------------")
+		localworker.PrintAvailableWorkflows()
 	},
 }
 

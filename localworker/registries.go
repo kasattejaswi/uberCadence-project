@@ -1,6 +1,10 @@
 package localworker
 
-import "github.com/kasattejaswi/uberCadence-project/workflows/helloworld"
+import (
+	"fmt"
+
+	"github.com/kasattejaswi/uberCadence-project/workflows/helloworld"
+)
 
 type Registries struct {
 	registry interface{}
@@ -23,4 +27,10 @@ func GetActivitiesForRegistration() []Registries {
 		alias:    "",
 	})
 	return rlist
+}
+
+func PrintAvailableWorkflows() {
+	for _, val := range GetWorkflowsForRegistration() {
+		fmt.Println(val.alias)
+	}
 }
