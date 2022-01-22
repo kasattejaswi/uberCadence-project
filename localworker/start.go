@@ -3,9 +3,11 @@ package localworker
 import (
 	"fmt"
 	"path/filepath"
+	"time"
 
 	"github.com/kasattejaswi/uberCadence-project/helper"
 	"github.com/kasattejaswi/uberCadence-project/statics"
+	"github.com/pborman/uuid"
 	"go.uber.org/cadence/client"
 	"go.uber.org/cadence/worker"
 )
@@ -18,6 +20,30 @@ func StartWorker(path string) {
 	registerWorkflowAndActivity(&h)
 	fmt.Println("Starting worker")
 	launchWorkers(&h)
+	select {}
+}
+
+func StartAllWorkflows(path string) {
+	path = filepath.Join(path, statics.ConfigFileName)
+	fmt.Println("Reading configuration at:", path)
+	var h helper.Helper
+	h.SetupServiceConfig(path)
+	fmt.Println("Starting all workflows")
+}
+
+func StartWorkflow(path string, name string) {
+	path = filepath.Join(path, statics.ConfigFileName)
+	fmt.Println("Reading configuration at:", path)
+	var h helper.Helper
+	h.SetupServiceConfig(path)
+	fmt.Println("Starting workflow", name)
+	workflowOptions := client.StartWorkflowOptions{
+		ID:                              name + "_" + uuid.New(),
+		TaskList:                        statics.TaskListName,
+		ExecutionStartToCloseTimeout:    time.Minute,
+		DecisionTaskStartToCloseTimeout: time.Minute,
+	}
+	h.StartWorkflow(workflowOptions, name, "Tejaswi")
 }
 
 func registerWorkflowAndActivity(
@@ -42,5 +68,5 @@ func launchWorkers(h *helper.Helper) {
 			WorkflowExecutionAlreadyCompletedErrorEnabled: true,
 		},
 	}
-	h.StartWorkers(h.Config.DomainName, "uberCadence-project", workerOptions)
+	h.StartWorkers(h.Config.DomainName, statics.TaskListName, workerOptions)
 }
