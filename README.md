@@ -41,12 +41,67 @@ The functions debitUser() and creditDriver() will be termed as activities and fu
 
 ## Document links
 Currently Cadence supports only two languages for coding: Go and Java. Support for other languauges are still in development phase.<br>
-Core concepts of Cadence:  https://cadenceworkflow.io/docs/concepts/
-Go client: https://cadenceworkflow.io/docs/go-client/
-Github: https://github.com/uber/cadence
-Official examples: https://github.com/uber-common/cadence-samples/tree/master/cmd/samples/recipes
+Core concepts of Cadence:  https://cadenceworkflow.io/docs/concepts/<br>
+Go client: https://cadenceworkflow.io/docs/go-client/<br>
+Github: https://github.com/uber/cadence<br>
+Official examples: https://github.com/uber-common/cadence-samples/tree/master/cmd/samples/recipes<br>
 
 ## What's in this project?
 
-This project revolves arount a basic use case. It will be updated soon.
-The official documentation about code is not really good and lacks a lot of details. I would recommend to spend time with <a href="https://github.com/uber-common/cadence-samples/tree/master/cmd/samples/common">common</a> folder. It will help to give a clear idea of workers. 
+This project contains the initial setup required in order to run your first workflow. A sample hello world workflow is also given. The workflows can be started via command line. All you need to write your workflows under <b>workflows</b> folder and register that workflow and its activities in <b>localworker/registries</b> as given in helloworld sample.
+
+The command line usage is as follows:<br>
+
+### Basic
+```
+Usage:
+  uberCadence-project [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  init        Writes a default configuration file under user's home directory
+  worker      Start a worker registering all available workflows
+  workflow    Helps in running workflows
+
+Flags:
+  -h, --help   help for uberCadence-project
+```
+
+### init
+```
+Usage:
+  uberCadence-project init [flags]
+
+Flags:
+  -f, --force         Use force to replace existing configuration and generate a new one.
+  -h, --help          help for init
+  -p, --path string   Path where config file will be written. Default will be user's home directory.
+```
+
+### worker
+```
+Usage:
+  uberCadence-project worker [command]
+
+Available Commands:
+  start       Perform start action
+
+Flags:
+  -h, --help   help for worker
+```
+
+### workflow
+```
+Usage:
+  uberCadence-project workflow [command]
+
+Available Commands:
+  list        List all the available workflows
+  run         Run a workflow using name or run all available workflows
+
+Flags:
+  -h, --help   help for workflow
+```
+
+I would recommend to spend time with <a href="https://github.com/uber-common/cadence-samples/tree/master/cmd/samples/common">common</a> folder. It will help to give a clear idea of workers. 
