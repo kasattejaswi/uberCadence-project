@@ -19,7 +19,11 @@ const ApplicationName = "helloWorldGroup"
 const HelloWorldWorkflowName = "helloWorldWorkflow"
 
 // helloWorkflow workflow decider
-func HelloWorldWorkflow(ctx workflow.Context, name string) error {
+// With this, you cant accept the parameters dynamically since it
+// is generallised to every workflow. Would suggest to write a function
+// which will provide parameters required
+func HelloWorldWorkflow(ctx workflow.Context) error {
+	name := HelloWorldParameters()
 	ao := workflow.ActivityOptions{
 		ScheduleToStartTimeout: time.Minute,
 		StartToCloseTimeout:    time.Minute,
@@ -35,25 +39,7 @@ func HelloWorldWorkflow(ctx workflow.Context, name string) error {
 		logger.Error("Activity failed.", zap.Error(err))
 		return err
 	}
-
-	// Adding a new activity to the workflow will result in a non-determinstic change for the workflow
-	// Please check https://cadenceworkflow.io/docs/go-client/workflow-versioning/ for more information
-	//
-	// Un-commenting the following code and the TestReplayWorkflowHistoryFromFile in replay_test.go
-	// will fail due to the non-determinstic change
-	//
-	// If you have a completed workflow execution without the following code and run the
-	// TestWorkflowShadowing in shadow_test.go or start the worker in shadow mode (using -m shadower)
-	// those two shadowing check will also fail due to the non-deterministic change
-	//
-	// err := workflow.ExecuteActivity(ctx, helloWorldActivity, name).Get(ctx, &helloworldResult)
-	// if err != nil {
-	// 	logger.Error("Activity failed.", zap.Error(err))
-	// 	return err
-	// }
-
 	logger.Info("Workflow completed.", zap.String("Result", helloworldResult))
-
 	return nil
 }
 
@@ -61,4 +47,8 @@ func HelloWorldActivity(ctx context.Context, name string) (string, error) {
 	logger := activity.GetLogger(ctx)
 	logger.Info("helloworld activity started")
 	return "Hello " + name + "!", nil
+}
+
+func HelloWorldParameters() string {
+	return "Tejaswi"
 }

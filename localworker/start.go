@@ -29,6 +29,18 @@ func StartAllWorkflows(path string) {
 	var h helper.Helper
 	h.SetupServiceConfig(path)
 	fmt.Println("Starting all workflows")
+	allWorkflows := GetWorkflowsForRegistration()
+	for _, a := range allWorkflows {
+		name := a.alias
+		fmt.Println("Starting workflow", name)
+		workflowOptions := client.StartWorkflowOptions{
+			ID:                              name + "_" + uuid.New(),
+			TaskList:                        statics.TaskListName,
+			ExecutionStartToCloseTimeout:    time.Minute,
+			DecisionTaskStartToCloseTimeout: time.Minute,
+		}
+		h.StartWorkflow(workflowOptions, name)
+	}
 }
 
 func StartWorkflow(path string, name string) {
@@ -43,7 +55,7 @@ func StartWorkflow(path string, name string) {
 		ExecutionStartToCloseTimeout:    time.Minute,
 		DecisionTaskStartToCloseTimeout: time.Minute,
 	}
-	h.StartWorkflow(workflowOptions, name, "Tejaswi")
+	h.StartWorkflow(workflowOptions, name)
 }
 
 func registerWorkflowAndActivity(
